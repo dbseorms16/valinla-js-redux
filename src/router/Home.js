@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { actionCreaters } from "../store";
+import { actionCreater } from "../store";
+import Todo from "../components/Todo";
 
-const Home = ({ Todos, addTodo }) => {
+const Home = ({ Todos, addTodo, deleteTodo }) => {
   const [text, setText] = useState("");
   const onChange = (e) => {
     setText(e.target.value);
@@ -10,7 +11,7 @@ const Home = ({ Todos, addTodo }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addTodo(e.target.value);
+    addTodo(text);
     setText("");
   };
   return (
@@ -20,17 +21,27 @@ const Home = ({ Todos, addTodo }) => {
         <input type="text" value={text} onChange={onChange} />
         <button>submit</button>
       </form>
-      <ul>{JSON.stringify(Todos)}</ul>
+      <ul>
+        {Todos.map((todo) => (
+          <Todo
+            text={todo.text}
+            id={todo.id}
+            deleteTodo={deleteTodo}
+            key={todo.id}
+          />
+        ))}
+      </ul>
     </div>
   );
 };
-function mapstateToProps(state) {
-  return { Todos: state };
-}
 
-function mapDispatchToProps(dispatch) {
+const maptoStateToProps = (state) => {
+  return { Todos: state };
+};
+const mapDispatchToProps = (dispatch) => {
   return {
-    addTodo: (text) => dispatch(actionCreaters.addTodo(text)),
+    addTodo: (text) => dispatch(actionCreater.addTodo(text)),
+    deleteTodo: (id) => dispatch(actionCreater.deleteTodo(id)),
   };
-}
-export default connect(mapstateToProps, mapDispatchToProps)(Home);
+};
+export default connect(maptoStateToProps, mapDispatchToProps)(Home);
