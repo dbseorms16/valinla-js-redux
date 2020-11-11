@@ -12,12 +12,10 @@ function Todo({ text, id, deleteTodo }) {
 
   return (
     <li>
-      <Link to={`${id}`}>
-        {text}
-        <button onClick={handleDeleteTodo} id={id}>
-          DEL
-        </button>
-      </Link>
+      <Link to={`${id}`}>{text}</Link>
+      <button onClick={handleDeleteTodo} id={id}>
+        DEL
+      </button>
     </li>
   );
 }
